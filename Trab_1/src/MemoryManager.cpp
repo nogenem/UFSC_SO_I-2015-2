@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "MemoryManager.h"
-#include "Simulator.h"
+//#include "Simulator.h"
 
 Partition::Partition(Process* process, unsigned int beginAddress, unsigned int endAddress):
     _beginAddress(beginAddress), _endAddress(endAddress), _process(process){}
@@ -123,7 +123,7 @@ void MemoryManager::allocateMemoryForProcess(Process* process) {
         // Adiciona a nova partição na _busyList
         addPartitionInOrder(new Partition(process, begin, end), true);
 
-        Simulator::getInstance()->getModel()->getProcessManager()->scheduler_choose(process);
+        //Simulator::getInstance()->getModel()->getProcessManager()->scheduler_choose(process);
     }else{// Processo entrou na fila de espera
         _queue.push_back(process);
     }
@@ -223,6 +223,8 @@ unsigned int MemoryManager::getNumPartitions() {
 
 Partition* MemoryManager::getPartition(unsigned int index) {
     // INSERT YOUR CODE TO RETURN THE PARTITION AT INDEX index
+    if(index < 0 || index >= _busyList.size())
+        return nullptr;
 
     auto it = _busyList.begin();
     std::advance(it, index);
